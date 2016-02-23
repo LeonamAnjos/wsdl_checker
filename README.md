@@ -39,3 +39,16 @@ or
 ```sh
 $ ./checker wsdl http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx?WSDL -o calc_preco -p nCdServico:"" -v --profile
 ```
+
+#### Result
+```sh
+> checking wsdl http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx?WSDL ...
+> Getting wsdl contract
+> Calling wsdl operation calc_preco
+> Wsdl call 'calc_preco' response: {:calc_preco_response=>{:calc_preco_result=>{:servicos=>nil}, :@xmlns=>"http://tempuri.org/"}}
+> done checking wsdl http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx?WSDL
+---
+Wsdl contract: Success!
+Wsdl call 'calc_preco': Success!
+Time elapsed: 1.3327311859466136 seconds
+```
