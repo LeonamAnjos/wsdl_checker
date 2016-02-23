@@ -1,1 +1,0 @@
-SayHi.start(ARGV)
