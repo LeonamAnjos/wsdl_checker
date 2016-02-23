@@ -11,7 +11,7 @@ class WsdlChecker < Thor
     true
   end
  
-  desc "wsdl address", "send a request to the wsdl operation specified"
+  desc "wsdl address", "Check the wsdl contract and send a request to a operation (optional)"
   method_option :param, type: :hash, default: {}, required: false, aliases: "-p"
   method_option :operation, required: false, aliases: "-o"
   def wsdl(address)
@@ -28,9 +28,14 @@ class WsdlChecker < Thor
     verbose_message "done checking wsdl #{address}"
     
     puts result.to_yaml
+    exit 1 if error?
   end
   
   private
+  
+  def error?
+    not result['HasError'].nil?
+  end
   
   def wsdl_contract(address)
     verbose_message "Getting wsdl contract"
