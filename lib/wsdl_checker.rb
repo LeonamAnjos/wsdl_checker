@@ -18,7 +18,8 @@ class WsdlChecker < Thor
     verbose_message "checking wsdl #{address} ..."
     
     time = Benchmark.realtime do
-      show_result wsdl_contract(address) 
+      client = wsdl_contract(address)
+      wsdl_call_operation(client, :calc_preco)
     end
 
     profile_message_with time
@@ -33,14 +34,24 @@ class WsdlChecker < Thor
   def wsdl_contract(address)
     begin
       client = Savon.client(wsdl: address)
-      response = client.call(:calc_preco_prazo, message: get_param)
+      add_result "Wsdl contract", "Success!"
       
-      verbose_message "Response: #{response.body}"
-      response.success?
+      return client
     rescue Exception => msg  
-      show_error msg
-      false
+      add_error "Wsdl contract error", msg
     end
+  end
+  
+  def wsdl_call_operation(client, operation)
+    begin
+      response = client.call(operation, message: get_param)
+      verbose_message "Wsdl call '#{operation}' response: #{response.body}"
+
+      add_result "Wsdl call '#{operation}'", "Success!"
+    rescue Exception => msg
+      add_error "Wsdl call '#{operation}'", msg
+    end
+      
   end
   
   def get_param
@@ -61,6 +72,11 @@ class WsdlChecker < Thor
   
   def profile_message_with(time=0)
     add_result "Time elapsed", "#{time} seconds" if options[:profile]
+  end
+
+  def add_error(k, v)
+    result.merge!({k => v})
+    result.merge!({"HasError" => true})
   end
   
   def add_result(k, v)
