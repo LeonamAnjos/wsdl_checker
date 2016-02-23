@@ -3,5 +3,3 @@ $: << File.expand_path("../lib/", __FILE__)
 require 'wsdl_checker'
 
 WsdlChecker.start(ARGV)
-
-
